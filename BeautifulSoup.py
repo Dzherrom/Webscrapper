@@ -2,42 +2,56 @@ from bs4 import BeautifulSoup
 import requests 
 import pandas as pd
 
-url = 'https://resultados.as.com/resultados/futbol/mundial/2022/clasificacion/'
-page = requests.get(url)
-soup = BeautifulSoup(page.content, 'html.parser')
+'''
+request url info
+use beautiful soup to turn content into html
+use find all func to find all team items
+same process to find the score of every team
+create variables and turn them into a list 
+
+'''
 
 #equipos
-class equipos:
-    eq = soup.find_all('span', class_='nombre-equipo')
-    equipos = []
-    count = 0
+class Equipos:
+    def __init__(self, url):
+        self.url = url 
+        self.page = requests.get(url)
+        self.soup = BeautifulSoup(self.page.content, 'html.parser') 
+        self.eq = self.soup.find_all('span', class_='nombre-equipo')
+        self.pt = self.soup.find_all('td', class_= "destacado")
+        self.lista_equipos = list()
+        self.lista_puntos = list()
 
-    def appe(self, eq):
-        for i in eq:
-            if count < 25:
-                equipos.append(i.text)
+
+    '''
+    stablish count
+    in for cycle append every item from team to
+    respective list inside the class
+    repeat the same process for scores
+    '''
+    def appending(self):
+        count = 0                   
+        for i in self.eq:
+            if count < 32:
+                self.lista_equipos.append(i.text)
+            else:
+                break
+            count +=1
+        
+        for i in self.pt:
+            count = 0
+            if count < 32:
+                self.lista_puntos.append(i.text)
             else:
                 break
             count +=1
 
-#puntos
-class puntos:
-    pt = soup.find_all('td', class_= "destacado")
-    puntos = []
-    count = 0
 
-    def appep(self, pt):    
-        for i in pt:
-            if count < 25:
-                puntos.append(i.text)
-            else:
-                break
-            count +=1
+        #Data frame yet to turn into a CSV file
+        df = pd.DataFrame({'Nombre':self.lista_equipos, 'Puntos':self.lista_puntos}, index = list(range(1,33)))
+        print(df)
+    
 
-appep()
-appe()
-df = pd.DataFrame({'Nombre':self.equipos, 'Puntos':self.puntos}, index = list(range(1,21)))
-df.to_csv('Clasificacion.csv', index =False)
-
-print(df)
+Equipo = Equipos('https://resultados.as.com/resultados/futbol/mundial/2022/clasificacion/')
+Equipo.appending()
 
