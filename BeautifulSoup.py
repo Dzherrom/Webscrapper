@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 
 '''
+---Program process step by step--
 request url info
 use beautiful soup to turn content into html
 use find all func to find all team items
@@ -47,11 +48,16 @@ class Equipos:
             count +=1
 
 
-        #Data frame yet to turn into a CSV file
-        df = pd.DataFrame({'Nombre':self.lista_equipos, 'Puntos':self.lista_puntos}, index = list(range(1,33)))
-        print(df)
-    
+    ''' 
+    Dataframe func will turn the gathered info
+    into an excel file 
+    '''
+    def DataFrame(self):
+        self.df = pd.DataFrame({'Nombre':self.lista_equipos, 'Puntos':self.lista_puntos}, index = list(range(1,33)))
+        self.df.to_csv('Clasificacion.csv', index =False)
 
 Equipo = Equipos('https://resultados.as.com/resultados/futbol/mundial/2022/clasificacion/')
 Equipo.appending()
+Equipo.DataFrame()
+
 
