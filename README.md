@@ -1,6 +1,5 @@
 # Webscrapper
-Studying web scrapping, project to practice git and virtual enviroments applying Object Oriented Programming
-Here I will practice webscrapping with
-BeautifulSoup
-Selenium
-hopefully scrappy
+Studying web scrapping, project to practice git and virtual enviroments applying Object Oriented Programming with 
+BeautifulSoup, Selenium and Scrappy. Creating automated applications for future freelancing offers. 
+
+Requirements.txt constantly updated
